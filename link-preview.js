@@ -8,6 +8,7 @@
 // @match        https://*/*
 // @updateURL    https://raw.githubusercontent.com/CheckCoder/tampermonkey-js/master/link-preview.js
 // @grant        none
+// @license      GPL
 // ==/UserScript==
 
 (function() {
