@@ -73,4 +73,12 @@
         if (hasIntoTimeout) event.preventDefault();
         hasIntoTimeout = false;
     });
+
+    function onKeyDown(event) {
+        if (event.key === 'Escape') {
+            hide();
+        }
+    }
+    // esc 关闭
+    document.body.addEventListener('keydown', onKeyDown);
 })();
