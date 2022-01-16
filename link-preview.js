@@ -6,7 +6,7 @@
 // @author       check
 // @match        http://*/*
 // @match        https://*/*
-// @updateURL    https://raw.githubusercontent.com/CheckCoder/preview-assistant-js/master/main.js
+// @updateURL    https://raw.githubusercontent.com/CheckCoder/tampermonkey-js/master/link-preview.js
 // @grant        none
 // ==/UserScript==
 
