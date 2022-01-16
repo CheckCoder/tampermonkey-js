@@ -14,15 +14,6 @@
 (function() {
     'use strict';
 
-    function getATagByEvent(event) {
-        for(let i = 0; i < event.path.length; i++) {
-            const nodeName = event.path[i].nodeName;
-            if (nodeName && nodeName.toLocaleLowerCase() === 'a') {
-                return event.path[i];
-            }
-        }
-    }
-
     // 自动将 http 请求升级为 https
     const meta = document.createElement('meta');
     meta.setAttribute('http-equiv', 'Content-Security-Policy');
@@ -48,6 +39,15 @@
         iframe.src = '';
     }
     iframeContainer.addEventListener('click', hide);
+
+    function getATagByEvent(event) {
+        for(let i = 0; i < event.path.length; i++) {
+            const nodeName = event.path[i].nodeName;
+            if (nodeName && nodeName.toLocaleLowerCase() === 'a') {
+                return event.path[i];
+            }
+        }
+    }
 
     // 长按逻辑
     let pressTimer = null;
