@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         链接预览助手
 // @namespace    https://github.com/CheckCoder
-// @version      0.1
+// @version      0.2
 // @description  长按链接将打开内置窗口预览。
 // @author       check
 // @match        http://*/*
@@ -14,11 +14,13 @@
 (function() {
     'use strict';
 
-    // 自动将 http 请求升级为 https
-    const meta = document.createElement('meta');
-    meta.setAttribute('http-equiv', 'Content-Security-Policy');
-    meta.setAttribute('content', 'upgrade-insecure-requests');
-    document.head.appendChild(meta);
+    // https://www.baidu.com 自动将 http 请求升级为 https
+    if (window.location.href.indexOf('https://www.baidu.com') === 0) {
+        const meta = document.createElement('meta');
+        meta.setAttribute('http-equiv', 'Content-Security-Policy');
+        meta.setAttribute('content', 'upgrade-insecure-requests');
+        document.head.appendChild(meta);
+    }
 
     // 界面
     const iframeContainer = document.createElement('div');
