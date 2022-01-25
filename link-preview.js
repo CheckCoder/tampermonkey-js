@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         链接预览助手
 // @namespace    https://github.com/CheckCoder
-// @version      0.5.3
-// @description  长按链接将打开内置窗口预览。
+// @version      0.5.4
+// @description  长按链接将打开内置窗口预览。Esc 可以关闭窗口。
 // @author       check
 // @match        http://*/*
 // @match        https://*/*
