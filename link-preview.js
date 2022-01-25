@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         链接预览助手
 // @namespace    https://github.com/CheckCoder
-// @version      0.5.1
+// @version      0.5.2
 // @description  长按链接将打开内置窗口预览。
 // @author       check
 // @match        http://*/*
@@ -101,7 +101,10 @@
     // esc 关闭
     document.body.addEventListener('keydown', onKeyDown);
     window.addEventListener('message', function(event){
-        if (event.data === '$link-preview-hide') hide();
+        if (event.data === '$link-preview-hide') {
+            hide();
+            window.focus();
+        }
     }, {
         capture: true
     });
