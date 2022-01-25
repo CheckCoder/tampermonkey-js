@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         链接预览助手
 // @namespace    https://github.com/CheckCoder
-// @version      0.3
+// @version      0.4
 // @description  长按链接将打开内置窗口预览。
 // @author       check
 // @match        http://*/*
@@ -28,11 +28,25 @@
     const iframe = document.createElement('iframe');
     iframe.setAttribute('style', 'width:90vw; height: 80vh; background: white; border: none');
 
+    // 设置id
+    const iframeContainerId = '$link-preview-iframeContainer';
+    const iframeId = '$link-preview-iframe';
+    iframeContainer.setAttribute('id', iframeContainerId);
+    iframe.setAttribute('id', iframeId);
+
+    function getIframeContainer() {
+        return document.getElementById(iframeContainerId);
+    }
+
+    function getIframe() {
+        return document.getElementById(iframeId);
+    }
+
     iframeContainer.appendChild(iframe);
-    document.body.appendChild(iframeContainer);
 
     // 显示和隐藏控制
     function show() {
+        if (!getIframeContainer()) document.body.appendChild(iframeContainer);
         iframeContainer.style.display = 'flex';
     }
 
