@@ -2,7 +2,7 @@
 // @name         链接预览助手
 // @namespace    https://github.com/CheckCoder
 // @version      0.5.4
-// @description  长按链接将打开内置窗口预览。Esc 可以关闭窗口。
+// @description  长按链接将打开内置窗口预览。Esc 可以关闭窗口。按住 Alt 或者 Ctrl 或者 Command 键，长按时不会打开预览。
 // @author       check
 // @match        http://*/*
 // @match        https://*/*
@@ -69,6 +69,7 @@
     let pressTimer = null;
     let hasIntoTimeout = false;
     let loogPressThreshold = 350;
+    let isPressCancelButton = false;
     document.body.addEventListener('mousedown', function(event) {
         const aTag = getATagByEvent(event);
         if (!aTag) return;
@@ -77,6 +78,7 @@
         if (!href || href.indexOf('javascript:') === 0) return;
 
         pressTimer = setTimeout(function() {
+            if (isPressCancelButton) return;
             hasIntoTimeout = true;
             iframe.src = href;
             show();
@@ -93,13 +95,21 @@
         hasIntoTimeout = false;
     });
 
+    const cancelButtonlist =  ['Meta', 'Alt', 'Control'];
     function onKeyDown(event) {
         if (event.key === 'Escape') {
             window.parent.postMessage('$link-preview-hide', '*');
+        } else if (cancelButtonlist.includes(event.key)) {
+            isPressCancelButton = true;
         }
     }
-    // esc 关闭
+    // esc 关闭 & 按住 Alt 或者 Ctrl 或者 Command 键，不长按打开预览
     document.body.addEventListener('keydown', onKeyDown);
+    document.body.addEventListener('keyup', function(event) {
+        if (cancelButtonlist.includes(event.key)) {
+            isPressCancelButton = false;
+        }
+    });
     window.addEventListener('message', function(event){
         if (event.data === '$link-preview-hide') {
             hide();
