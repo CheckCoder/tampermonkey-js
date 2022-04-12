@@ -2,7 +2,7 @@
 // @name         链接预览助手
 // @namespace    https://github.com/CheckCoder
 // @version      0.7.0
-// @description  长按链接将打开内置窗口预览。Esc 可以关闭窗口。按住 Alt 或者 Ctrl 或者 Command 键，长按时不会打开预览。
+// @description  长按链接将打开内置窗口预览。Esc 可以关闭窗口。按住 Shift 或者 Alt 或者 Ctrl 或者 Command 键 或者 鼠标移动，长按时不会打开预览。
 // @author       check
 // @match        http://*/*
 // @match        https://*/*
