@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         链接预览助手
 // @namespace    https://github.com/CheckCoder
-// @version      0.6.0
+// @version      0.7.0
 // @description  长按链接将打开内置窗口预览。Esc 可以关闭窗口。按住 Alt 或者 Ctrl 或者 Command 键，长按时不会打开预览。
 // @author       check
 // @match        http://*/*
@@ -71,6 +71,10 @@
     let loogPressThreshold = 350;
     let isPressCancelButton = false;
     document.body.addEventListener('mousedown', function(event) {
+        // 按住 Shift 或者 Alt 或者 Ctrl 或者 Command 键，不长按打开预览
+        if (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey) return;
+        // 非鼠标左键，不长按打开预览
+        if (event.button !== 0) return;
         const aTag = getATagByEvent(event);
         if (!aTag) return;
 
@@ -78,36 +82,36 @@
         if (!href || href.indexOf('javascript:') === 0) return;
 
         pressTimer = setTimeout(function() {
-            if (isPressCancelButton) return;
             hasIntoTimeout = true;
             iframe.src = href;
             show();
         }, loogPressThreshold);
     });
-    document.body.addEventListener('mouseup', function() {
-        if (pressTimer) {
-            clearTimeout(pressTimer);
-            pressTimer = null;
-        }
-    });
-    document.body.addEventListener('click', function(event) {
-        if (hasIntoTimeout) event.preventDefault();
-        hasIntoTimeout = false;
+    function cancelTimer() {
+        if (!pressTimer) return;
+            
+        clearTimeout(pressTimer);
+        pressTimer = null;
+    }
+    document.body.addEventListener('mouseup', cancelTimer);
+    // 鼠标移动取消
+    let moveTime = 0;
+    document.body.addEventListener('mousemove', function() {
+        if (!pressTimer) return;
+        if (++moveTime < 2) return;
+        cancelTimer();
+        moveTime = 0;
     });
 
-    const cancelButtonlist =  ['Meta', 'Alt', 'Control'];
-    function onKeyDown(event) {
+    // document.body.addEventListener('click', function(event) {
+    //     if (hasIntoTimeout) event.preventDefault();
+    //     hasIntoTimeout = false;
+    // });
+
+    // esc 关闭
+    document.body.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             window.parent.postMessage('$link-preview-hide', '*');
-        } else if (cancelButtonlist.includes(event.key)) {
-            isPressCancelButton = true;
-        }
-    }
-    // esc 关闭 & 按住 Alt 或者 Ctrl 或者 Command 键，不长按打开预览
-    document.body.addEventListener('keydown', onKeyDown);
-    document.body.addEventListener('keyup', function(event) {
-        if (cancelButtonlist.includes(event.key)) {
-            isPressCancelButton = false;
         }
     });
     window.addEventListener('message', function(event){
