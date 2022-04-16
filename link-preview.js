@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         链接预览助手
 // @namespace    https://github.com/CheckCoder
-// @version      0.7.0
-// @description  长按链接将打开内置窗口预览。Esc 可以关闭窗口。按住 Shift 或者 Alt 或者 Ctrl 或者 Command 键 或者 鼠标移动，长按时不会打开预览。
+// @version      0.8.0
+// @description  功能1：长按链接将打开内置窗口预览。Esc 可以关闭窗口。按住 Shift 或者 Alt 或者 Ctrl 或者 Command 键 或者 鼠标移动，长按时不会打开预览。功能2：鼠标中键 + （Shift 或者 Alt 或者 Ctrl 或者 Command 键），新窗口打开链接。
 // @author       check
 // @match        http://*/*
 // @match        https://*/*
@@ -89,7 +89,7 @@
     });
     function cancelTimer() {
         if (!pressTimer) return;
-            
+
         clearTimeout(pressTimer);
         pressTimer = null;
     }
@@ -121,5 +121,18 @@
         }
     }, {
         capture: true
+    });
+
+    // 鼠标中键 + （Shift 或者 Alt 或者 Ctrl 或者 Command 键），新窗口打开链接
+    document.body.addEventListener('mousedown', function(event) {
+        if (event.button !== 1 || !(event.shiftKey || event.altKey || event.ctrlKey || event.metaKey)) return;
+
+        const aTag = getATagByEvent(event);
+        if (!aTag) return;
+
+        const href = aTag.getAttribute('href');
+        if (!href || href.indexOf('javascript:') === 0) return;
+
+        window.open(href);
     });
 })();
